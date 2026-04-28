@@ -12,18 +12,19 @@ app.get('/', (req, res) =>{
     res.send('Hello from Express!')
 });
 
-//GET request returns an array of items
-app.get("/api/tasks", (req, res) =>{
-    const items = [
-        {id: 1, name: "Take out trash"},
-        {id: 2, name: "Pay rent bill"},
-    ];
-    res.json(items);
-})
+const tasks = [
+    'take out trash'
+];
 
 
 
+app.get('/api/getTasks', (req, res) => {
+    res.json(tasks);
+});
 
+app.post('/api/addTasks', (req, res) => {
+    tasks.append(req);
+});
 
 
 app.listen(port, () =>{

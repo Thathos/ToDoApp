@@ -10,7 +10,7 @@
         <h2 class="title">To-Do app with express.js</h2>
             <label for="task">Task:</label>
             <input type="text" id="task" placeholder="Enter a task">
-            <button type="submit" id="btn">Submit</button>
+            <button type="submit" id="addBtn">Submit</button>
 
             
 
@@ -18,47 +18,101 @@
             <ul id="taskList"></ul>
     </div>
     <script>
-        const btn = document.getElementById("btn"); //getting button from doc
-
-        const taskList = document.getElementById("taskList"); //getting ul from doc
-
-        const tasks = [];
-
-        btn.addEventListener('click', () =>{ //button listener function to add a task to the ul
-            let task = document.getElementById("task"); //getting task input from doc
-            let taskText = task.value; //setting the value of task to a new var
-
-            let li = document.createElement("li"); //creating list element
-            li.innerText = taskText; //setting the text of the list elements to task input
-
-            taskList.appendChild(li); //add the list element to the ul
-            
-            // tasks.push(li);
+        const btn = document.getElementById("addBtn");
+        const list = document.getElementById("taskList");
 
 
-            task.value = ""; //clear the input field 
-            let removeBtn = document.createElement("button"); //create a remove button for each li
 
-            removeBtn.type = "button";
-            removeBtn.innerText = "Clear"; //adding text to the button
+        btn.addEventListener('click', addTask);
 
-            li.appendChild(removeBtn); //adding the button to the li
 
-            // tasks.forEach((tasks) => {
-            //     let removeBtn = document.createElement("button");
-            // })
 
-            removeBtn.addEventListener('click', () => {
-                taskList.removeChild(li);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        async function getTasks(){
+            const response = await fetch('/api/getTasks');
+            const data = await response.json();
+            data.forEach(task => {
+                const li = document.createElement('li');
+                li.textContent = `${task}`;
+                list.appendChild(li);
             });
-        });
+        }
+
+        async function addTask(url = '/api/addTask', data = {}){
+            const task = document.getElementById("task");
+            let taskItem = task.value;
+            console.log(taskItem);
+            const response = await fetch(url,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+        }
+
+        // const btn = document.getElementById("btn"); //getting button from doc
+
+        // const taskList = document.getElementById("taskList"); //getting ul from doc
+
+        // const tasks = [];
+
+        // btn.addEventListener('click', () =>{ //button listener function to add a task to the ul
+        //     let task = document.getElementById("task"); //getting task input from doc
+        //     let taskText = task.value; //setting the value of task to a new var
+
+        //     let li = document.createElement("li"); //creating list element
+        //     li.innerText = taskText; //setting the text of the list elements to task input
+
+        //     taskList.appendChild(li); //add the list element to the ul
+            
+        //     // tasks.push(li);
 
 
+        //     task.value = ""; //clear the input field 
+        //     let removeBtn = document.createElement("button"); //create a remove button for each li
 
+        //     removeBtn.type = "button";
+        //     removeBtn.innerText = "Clear"; //adding text to the button
 
+        //     li.appendChild(removeBtn); //adding the button to the li
 
+        //     // tasks.forEach((tasks) => {
+        //     //     let removeBtn = document.createElement("button");
+        //     // })
 
-
+        //     removeBtn.addEventListener('click', () => {
+        //         taskList.removeChild(li);
+        //     });
+        // });
     </script>
 </body>
 </html>
